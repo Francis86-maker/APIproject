@@ -4,6 +4,9 @@ from sqlalchemy import Session
 from . import models 
 import bcrypt
 from ..models import User
+from jose import jwt
+from datetime import datetime, timedelta 
+
 
 router = APIRouter()
 
@@ -16,7 +19,9 @@ def login(request: User, db: Session=Depends(get_db)):
     raise HTTPException(status_code=404, detail="password not found")
   if not user:
     raise HTTPException(status_code=404, detail="email not found")
-  token_data = {"user_id": user_id}
+  token_data = {"user_id": user_id,
+                "exp": datetime.utcnow()+ timedelta(hours=12)
+               }
   token = jwt.encode(token_data, SECRET_KEY, algorithm="HS256")
   return {
     "message": "login successful"
