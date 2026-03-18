@@ -7,7 +7,7 @@ from . import models
 router = APIRouter()
 
 @router.post('/blog')
-def get_active_user(current_user: User=Depends(get_active_user), db: Session=Depends(get_db)):
+def create_blog(current_user: User=Depends(get_active_user), db: Session=Depends(get_db)):
   new_blog = models.Blog(name=request.name, user_id = current_user.id)
   db.add(new_blog)
   db.commit()
