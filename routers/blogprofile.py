@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get('/blog/me')
 def get_blogs(current_user: Blog=Depends(get_active_user), db: Session=Depends(get_db)):
-  blog = db.query(models.User).filter(models.User.id == request.id)
+  blog = db.query(models.Blog).filter(models.Blog.user_id == current_user.id).first()
   if not blog:
     raise HTTPException(atatus_code=404, detail="blog not found")
   return blog
